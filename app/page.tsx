@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Phone, CheckCircle, Star, X, Calendar, Sparkles, Plus, ChevronLeft, ChevronRight, Menu } from "lucide-react"
 import { RefObject } from "react"
 
-// Add this custom hook for scroll animations
+// Custom hook for scroll animations
 const useInView = (threshold = 0.1): [RefObject<HTMLElement | null>, boolean] => {
   const [isInView, setIsInView] = useState(false)
   const ref = useRef<HTMLElement | null>(null)
@@ -43,6 +43,10 @@ export default function ClaraLanding() {
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({ name: "", email: "", restaurant: "", phone: "" })
   const [showContactForm, setShowContactForm] = useState(false)
+
+  const [vapiInstance, setVapiInstance] = useState<any>(null)
+  const [isMicrophoneOn, setIsMicrophoneOn] = useState(false)
+  const [vapiError, setVapiError] = useState<string | null>(null)
 
   const testimonials = [
     {
@@ -85,12 +89,133 @@ export default function ClaraLanding() {
   const [faqRef, faqInView] = useInView()
   const [footerRef, footerInView] = useInView()
 
+  const [videoLoaded, setVideoLoaded] = useState(false)
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
     }, 4000)
     return () => clearInterval(timer)
   }, [testimonials.length])
+
+  // Embed video on component mount
+  useEffect(() => {
+    if (!videoLoaded) {
+      const video = document.createElement("iframe")
+      video.src = "https://www.youtube.com/embed/VvIicY1Hzgc?autoplay=1"
+      video.className = "w-full h-full"
+      video.allowFullscreen = true
+      video.allow = "autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      const element = document.querySelector(".aspect-video")
+      if (element) {
+        element.innerHTML = ""
+        element.appendChild(video)
+        setVideoLoaded(true)
+      }
+    }
+  }, [videoLoaded])
+
+  // Initialize Vapi on component mount
+  useEffect(() => {
+    const assistant = "633d9c9a-bd65-4ea5-9841-c4ddba58d9ef"
+    const apiKey = "a2faf751-b40e-42c1-9682-c7b7b42ba1f7"
+    const buttonConfig = {}
+
+    // Check if the script is already loaded to avoid duplicates
+    if (document.querySelector('script[src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"]')) {
+      return
+    }
+
+    const script = document.createElement("script")
+    script.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"
+    script.defer = true
+    script.async = true
+
+    script.onload = () => {
+      if (!(window as any).vapiSDK) {
+        setVapiError("Failed to load Vapi SDK")
+        return
+      }
+
+      try {
+        const vapi = (window as any).vapiSDK.run({
+          apiKey: apiKey,
+          assistant: assistant,
+          config: buttonConfig,
+        })
+
+        if (!vapi) {
+          setVapiError("Failed to initialize Vapi instance")
+          return
+        }
+
+        setVapiInstance(vapi)
+        console.log("Vapi initialized successfully:", vapi)
+
+        // Add event listeners for call state changes
+        vapi.on("call-start", () => {
+          console.log("Vapi call started")
+          setIsMicrophoneOn(true)
+          setVapiError(null)
+        })
+
+        vapi.on("call-end", () => {
+          console.log("Vapi call ended")
+          setIsMicrophoneOn(false)
+          setVapiError(null)
+        })
+
+        vapi.on("error", (error: any) => {
+          console.error("Vapi error:", error)
+          setVapiError("An error occurred with the voice assistant")
+          setIsMicrophoneOn(false)
+        })
+      } catch (error) {
+        console.error("Error initializing Vapi:", error)
+        setVapiError("Failed to initialize voice assistant")
+      }
+    }
+
+    script.onerror = () => {
+      console.error("Failed to load Vapi script")
+      setVapiError("Failed to load voice assistant script")
+    }
+
+    document.body.appendChild(script)
+
+    return () => {
+      if (vapiInstance) {
+        try {
+          vapiInstance.stop()
+        } catch (error) {
+          console.error("Error stopping Vapi instance:", error)
+        }
+      }
+      const scriptElement = document.querySelector('script[src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"]')
+      if (scriptElement) {
+        document.body.removeChild(scriptElement)
+      }
+    }
+  }, []) // Removed vapiInstance from dependencies to prevent re-initialization
+
+  const toggleMicrophone = () => {
+    if (!vapiInstance) {
+      setVapiError("Voice assistant not initialized")
+      return
+    }
+
+    try {
+      if (isMicrophoneOn) {
+        vapiInstance.stop()
+      } else {
+        vapiInstance.start()
+      }
+    } catch (error) {
+      console.error("Error toggling microphone:", error)
+      setVapiError("Failed to toggle microphone")
+      setIsMicrophoneOn(false)
+    }
+  }
 
   const nextTestimonial = () => {
     setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
@@ -231,18 +356,6 @@ export default function ClaraLanding() {
                   <div className="text-center">
                     <div
                       className="w-16 h-16 bg-orange-500 rounded-full mx-auto mb-4 flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
-                      onClick={() => {
-                        // Lazy load video when clicked
-                        const video = document.createElement("iframe")
-                        video.src = "https://www.youtube.com/embed/VvIicY1Hzgc"
-                        video.className = "w-full h-full"
-                        video.allowFullscreen = true
-                        const element = document.querySelector(".aspect-video")
-                        if (element) {
-                          element.innerHTML = ""
-                          element.appendChild(video)
-                        }
-                      }}
                     >
                       <span className="text-white text-2xl">▶️</span>
                     </div>
@@ -727,6 +840,27 @@ export default function ClaraLanding() {
           </div>
         </div>
       </section>
+
+      {/* Vapi Call Button */}
+      <div className="fixed bottom-6 right-6 flex flex-col items-center space-y-2">
+        {vapiError && (
+          <div className="bg-red-500 text-white text-sm px-4 py-2 rounded-lg shadow-lg">
+            {vapiError}
+          </div>
+        )}
+        <button
+          className={
+            `w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-colors ` +
+            `${isMicrophoneOn ? 'bg-green-500 hover:bg-green-600' : 'bg-orange-500 hover:bg-orange-600'} ` +
+            `${!vapiInstance ? 'opacity-50 cursor-not-allowed' : ''}`
+          }
+          onClick={toggleMicrophone}
+          disabled={!vapiInstance}
+          title={isMicrophoneOn ? 'Turn off microphone' : 'Turn on microphone'}
+        >
+          <Phone className="w-6 h-6 text-white" />
+        </button>
+      </div>
 
       {/* Contact Form Modal */}
       {showContactForm && (
