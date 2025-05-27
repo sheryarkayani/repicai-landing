@@ -10,7 +10,6 @@ import PricingSection from "../components/clara-landing/PricingSection"
 import FaqSection from "../components/clara-landing/FaqSection"
 import FooterSection from "../components/clara-landing/FooterSection"
 import ContactFormModal from "../components/clara-landing/ContactFormModal"
-
 import { FormData } from "../types"
 
 export default function ClaraLanding() {
@@ -26,12 +25,23 @@ export default function ClaraLanding() {
   useEffect(() => {
     const assistant = "633d9c9a-bd65-4ea5-9841-c4ddba58d9ef"
     const apiKey = "a2faf751-b40e-42c1-9682-c7b7b42ba1f7"
- 
+
     const buttonConfig = {
-      position: "bottom-right", // adjust as needed
-      offset: "40px",           // increase this value to move the button further from the edge
-      // ...other config
-    };
+      position: "bottom-right",
+      offset: "40px",
+      width: "60px",
+      height: "60px",
+      style: {
+        zIndex: 9999,
+      },
+      idle: {
+        color: "rgb(255, 153, 0)", // button background color
+        type: "pill",
+        title: "Check the demo of Clara",
+        subtitle: "Talk with our AI assistant",
+        icon: "https://img.icons8.com/ios-filled/50/ffffff/phone.png", // white phone icon on orange bg
+      },
+    }
 
     const script = document.createElement("script")
     script.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"
@@ -41,8 +51,8 @@ export default function ClaraLanding() {
     script.onload = () => {
       if (window.vapiSDK) {
         window.vapiSDK.run({
-          apiKey: apiKey,
-          assistant: assistant,
+          apiKey,
+          assistant,
           config: buttonConfig,
         })
       }
@@ -51,7 +61,7 @@ export default function ClaraLanding() {
     document.body.appendChild(script)
 
     return () => {
-      document.body.removeChild(script) // Cleanup on unmount
+      document.body.removeChild(script)
     }
   }, [])
 
@@ -74,7 +84,6 @@ export default function ClaraLanding() {
       <PricingSection />
       <FaqSection />
       <FooterSection />
-      {/* <VapiCallButton /> */}
       <ContactFormModal
         showContactForm={showContactForm}
         setShowContactForm={setShowContactForm}
