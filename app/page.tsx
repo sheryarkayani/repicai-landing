@@ -10,7 +10,7 @@ import PricingSection from "../components/clara-landing/PricingSection"
 import FaqSection from "../components/clara-landing/FaqSection"
 import FooterSection from "../components/clara-landing/FooterSection"
 import ContactFormModal from "../components/clara-landing/ContactFormModal"
-//import VapiCallButton from "../components/clara-landing/VapiCallButton"
+import VapiCallButton from "../components/clara-landing/VapiCallButton"
 import { FormData } from "../types"
 
 export default function ClaraLanding() {
