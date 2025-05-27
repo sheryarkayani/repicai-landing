@@ -10,7 +10,7 @@ import PricingSection from "../components/clara-landing/PricingSection"
 import FaqSection from "../components/clara-landing/FaqSection"
 import FooterSection from "../components/clara-landing/FooterSection"
 import ContactFormModal from "../components/clara-landing/ContactFormModal"
-import VapiCallButton from "../components/clara-landing/VapiCallButton"
+
 import { FormData } from "../types"
 
 export default function ClaraLanding() {
@@ -26,7 +26,12 @@ export default function ClaraLanding() {
   useEffect(() => {
     const assistant = "633d9c9a-bd65-4ea5-9841-c4ddba58d9ef"
     const apiKey = "a2faf751-b40e-42c1-9682-c7b7b42ba1f7"
-    const buttonConfig = {} // Optional customization
+ 
+    const buttonConfig = {
+      position: "bottom-right", // adjust as needed
+      offset: "40px",           // increase this value to move the button further from the edge
+      // ...other config
+    };
 
     const script = document.createElement("script")
     script.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"
