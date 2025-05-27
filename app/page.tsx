@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Phone, CheckCircle, Star, X, Calendar, Sparkles, Plus, ChevronLeft, ChevronRight, Menu } from "lucide-react"
+import { RefObject } from "react"
 
 // Add this custom hook for scroll animations
-const useInView = (threshold = 0.1) => {
+const useInView = (threshold = 0.1): [RefObject<HTMLElement | null>, boolean] => {
   const [isInView, setIsInView] = useState(false)
-  const ref = useRef(null)
+  const ref = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -233,7 +234,7 @@ export default function ClaraLanding() {
                       onClick={() => {
                         // Lazy load video when clicked
                         const video = document.createElement("iframe")
-                        video.src = "https://www.youtube.com/embed/dQw4w9WgXcQ"
+                        video.src = "https://www.youtube.com/embed/VvIicY1Hzgc"
                         video.className = "w-full h-full"
                         video.allowFullscreen = true
                         const element = document.querySelector(".aspect-video")
