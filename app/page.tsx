@@ -34,17 +34,28 @@ export default function ClaraLanding() {
     const buttonConfig = {
       position: "bottom-right",
       offset: "40px",
-      width: "60px",
-      height: "60px",
-      style: {
-        zIndex: 2147483647, // Maximum z-index
-      },
+      width: "auto",
+      height: "auto",
       idle: {
-        color: "rgb(255, 153, 0)", // Orange background
+        color: "rgb(255, 153, 0)",
         type: "pill",
-        title: "Experience Clara Live",
-        subtitle: "Connect with our AI Assistant",
-        icon: "https://img.icons8.com/ios-filled/50/ffffff/phone.png", // White phone icon
+        title: "Try Clara",
+        subtitle: window.innerWidth <= 480 ? "Demo" : null,
+        icon: "https://unpkg.com/lucide-static@0.321.0/icons/phone.svg",
+      },
+      loading: {
+        color: "rgb(255, 193, 7)",
+        type: "pill",
+        title: "Connecting",
+        subtitle: window.innerWidth <= 480 ? "Wait" : null,
+        icon: "https://unpkg.com/lucide-static@0.321.0/icons/loader-2.svg",
+      },
+      active: {
+        color: "rgb(220, 53, 69)",
+        type: "pill",
+        title: "Clara Live",
+        subtitle: window.innerWidth <= 480 ? "Tap End" : null,
+        icon: "https://unpkg.com/lucide-static@0.321.0/icons/phone-off.svg",
       },
     }
 
@@ -55,7 +66,7 @@ export default function ClaraLanding() {
 
     const style = document.createElement("style")
     style.textContent = `
-      /* Force Vapi widget to be on top */
+      .vapi-btn,
       .vapi-call-widget,
       [id*="vapi"],
       [class*="vapi"] {
@@ -63,8 +74,65 @@ export default function ClaraLanding() {
         z-index: 2147483647 !important;
         pointer-events: auto !important;
       }
-      
-      /* Target all possible video elements and containers */
+
+      .vapi-btn-pill {
+        border-radius: 30px !important;
+        padding: 12px 20px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        transition: all 0.3s ease !important;
+        min-height: 60px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
+        overflow: visible !important;
+      }
+
+      .vapi-btn-pill:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
+      }
+
+      .vapi-btn .text-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        flex-grow: 1 !important;
+        overflow: visible !important;
+        text-align: center !important;
+      }
+
+      .vapi-btn .title,
+      .vapi-btn .subtitle {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+        line-height: 1.3 !important;
+        color: white !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+        display: block !important;
+        overflow: visible !important;
+        white-space: nowrap !important;
+        margin: 0 !important;
+        padding: 0 4px !important;
+      }
+
+      .vapi-btn .title {
+        font-size: 14px !important;
+        margin-bottom: 2px !important;
+      }
+
+      .vapi-btn .subtitle {
+        font-size: 12px !important;
+        opacity: 0.9 !important;
+        font-weight: 500 !important;
+      }
+
+      .vapi-btn .icon {
+        margin-right: 8px !important;
+        flex-shrink: 0 !important;
+      }
+
       video,
       video *,
       [class*="video"],
@@ -82,88 +150,162 @@ export default function ClaraLanding() {
       div[class*="absolute"] {
         z-index: 1 !important;
       }
-      
-      /* Specific targeting for mobile */
-      @media (max-width: 1200px) {
-        .vapi-call-widget {
-          bottom: 70px !important;
-          right: 20px !important;
-          transform: scale(1) !important;
-          z-index: 2147483648 !important;
-        }
-        
-        /* Aggressive video element targeting */
-        * video,
-        * [class*="video"],
-        * .hero-section,
-        * [class*="hero"],
-        body > div > div > section,
-        body > div > div > section *,
-        body > div > section,
-        body > div > section * {
-          z-index: 1 !important;
-          position: relative !important;
-          isolation: auto !important;
-        }
-        
-        /* Ensure widget and all its children stay on top */
+
+      @media (min-width: 1201px) {
         .vapi-call-widget,
-        .vapi-call-widget *,
-        .vapi-call-widget > *,
-        .vapi-call-widget button,
-        .vapi-call-widget div {
-          z-index: 2147483648 !important;
-          position: relative !important;
+        .vapi-btn {
+          bottom: 40px !important;
+          right: 40px !important;
+        }
+        .vapi-btn-pill {
+          min-width: 200px !important;
+          max-width: 250px !important;
+          padding: 14px 24px !important;
+        }
+        .vapi-btn .title {
+          font-size: 15px !important;
+        }
+        .vapi-btn .subtitle {
+          font-size: 13px !important;
         }
       }
-      
-      /* Extra mobile targeting */
-      @media (max-width: 768px) {
-        .vapi-call-widget {
-          bottom: 80px !important;
-          right: 15px !important;
-          width: 55px !important;
-          height: 55px !important;
+
+      @media (min-width: 769px) and (max-width: 1200px) {
+        .vapi-call-widget,
+        .vapi-btn {
+          bottom: 60px !important;
+          right: 30px !important;
           z-index: 2147483648 !important;
         }
-        
-        /* Nuclear option - force everything else to be behind */
-        body > div:not([class*="vapi"]) {
-          z-index: 1 !important;
+        .vapi-btn-pill {
+          min-width: 180px !important;
+          max-width: 220px !important;
+          padding: 12px 20px !important;
         }
-        
-        body > div:not([class*="vapi"]) * {
-          z-index: auto !important;
+        .vapi-btn .title {
+          font-size: 14px !important;
         }
+        .vapi-btn .subtitle {
+          font-size: 12px !important;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .vapi-call-widget,
+        .vapi-btn {
+          bottom: 80px !important;
+          right: 20px !important;
+          z-index: 2147483648 !important;
+        }
+        .vapi-btn-pill {
+          min-width: 160px !important;
+          max-width: 180px !important;
+          padding: 10px 16px !important;
+          min-height: 55px !important;
+        }
+        .vapi-btn .title {
+          font-size: 13px !important;
+          line-height: 1.2 !important;
+        }
+        .vapi-btn .subtitle {
+          font-size: 11px !important;
+          line-height: 1.2 !important;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .vapi-call-widget,
+        .vapi-btn {
+          bottom: 70px !important;
+          right: 15px !important;
+        }
+        .vapi-btn-pill {
+          min-width: 140px !important;
+          max-width: 160px !important;
+          padding: 8px 14px !important;
+          min-height: 50px !important;
+        }
+        .vapi-btn .title {
+          font-size: 12px !important;
+          line-height: 1.1 !important;
+        }
+        .vapi-btn .subtitle {
+          font-size: 10px !important;
+          line-height: 1.1 !important;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .vapi-btn-pill {
+          min-width: 120px !important;
+          max-width: 140px !important;
+          padding: 6px 12px !important;
+          min-height: 45px !important;
+        }
+        .vapi-btn .title {
+          font-size: 11px !important;
+        }
+        .vapi-btn .subtitle {
+          font-size: 9px !important;
+        }
+      }
+
+      .vapi-btn * {
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: block !important;
+        position: relative !important;
+      }
+
+      .vapi-btn > * {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 4px !important;
       }
     `
     document.head.appendChild(style)
 
     script.onload = () => {
       if ((window as any).vapiSDK) {
-        (window as any).vapiSDK.run({
+        const vapiInstance = (window as any).vapiSDK.run({
           apiKey,
           assistant: assistantId,
           config: buttonConfig,
         })
-        
-        // Additional fix: Ensure widget stays on top after load
-        setTimeout(() => {
-          const vapiWidget = document.querySelector('.vapi-call-widget') || 
-                           document.querySelector('[class*="vapi"]') ||
-                           document.querySelector('[id*="vapi"]')
-          
-          if (vapiWidget) {
-            (vapiWidget as HTMLElement).style.zIndex = '2147483648'
-            ;(vapiWidget as HTMLElement).style.position = 'fixed'
-            
-            // Force all video elements to lower z-index
-            const videos = document.querySelectorAll('video, [class*="video"], .hero-section')
-            videos.forEach(video => {
-              (video as HTMLElement).style.zIndex = '1'
-            })
+
+        const ensureTextVisibility = () => {
+          const vapiBtn = document.querySelector(".vapi-btn")
+          if (vapiBtn) {
+            const title = vapiBtn.querySelector(".title") as HTMLElement
+            const subtitle = vapiBtn.querySelector(".subtitle") as HTMLElement
+            if (title) {
+              title.style.visibility = "visible"
+              title.style.opacity = "1"
+            }
+            if (subtitle) {
+              subtitle.style.visibility = "visible"
+              subtitle.style.opacity = "1"
+            }
           }
-        }, 1000)
+        }
+
+        setTimeout(ensureTextVisibility, 500)
+        setTimeout(ensureTextVisibility, 2000)
+
+        if (vapiInstance) {
+          vapiInstance.on('call-start', () => {
+            console.log('Clara AI call started')
+          })
+
+          vapiInstance.on('call-end', () => {
+            console.log('Clara AI call ended')
+          })
+
+          vapiInstance.on('error', (error: any) => {
+            console.error('Clara AI error:', error)
+          })
+        }
       } else {
         console.error("Vapi SDK failed to load")
       }
@@ -175,6 +317,43 @@ export default function ClaraLanding() {
 
     document.body.appendChild(script)
 
+    const handleResize = () => {
+      const vapiWidget = document.querySelector('.vapi-btn') || 
+                        document.querySelector('.vapi-call-widget')
+      if (vapiWidget) {
+        setTimeout(() => {
+          const newConfig = {
+            ...buttonConfig,
+            idle: {
+              ...buttonConfig.idle,
+              title: "Try Clara",
+              subtitle: window.innerWidth <= 480 ? "Demo" : null,
+            },
+            loading: {
+              ...buttonConfig.loading,
+              title: "Connecting",
+              subtitle: window.innerWidth <= 480 ? "Wait" : null,
+            },
+            active: {
+              ...buttonConfig.active,
+              title: "Clara Live",
+              subtitle: window.innerWidth <= 480 ? "Tap End" : null,
+            }
+          }
+          
+          if ((window as any).vapiSDK) {
+            (window as any).vapiSDK.run({
+              apiKey,
+              assistant: assistantId,
+              config: newConfig,
+            })
+          }
+        }, 100)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+
     return () => {
       const scriptElement = document.querySelector('script[src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"]')
       if (scriptElement) {
@@ -183,12 +362,12 @@ export default function ClaraLanding() {
       if (document.head.contains(style)) {
         document.head.removeChild(style)
       }
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
   return (
     <div className="min-h-screen bg-white relative">
-      {/* Background Pattern */}
       <div
         className="fixed inset-0 opacity-[0.02] pointer-events-none"
         style={{
