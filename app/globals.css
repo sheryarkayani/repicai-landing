@@ -92,3 +92,21 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Added to ensure Vapi widget stays on top */
+.vapi-call-widget {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
+}
+
+@media (max-width: 1200px) {
+  .vapi-call-widget {
+    bottom: 70px !important;
+    right: 20px !important;
+    transform: scale(1) !important;
+  }
+  video, .hero-section {
+    z-index: 1 !important; /* Lower z-index for video and hero section */
+  }
+}

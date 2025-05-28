@@ -1,15 +1,15 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import HeroSection from "../components/clara-landing/HeroSection"
-import OffersSection from "../components/clara-landing/OffersSection"
-import BenefitsSection from "../components/clara-landing/BenefitsSection"
-import ResultsSection from "../components/clara-landing/ResultsSection"
-import TestimonialsSection from "../components/clara-landing/TestimonialsSection"
-import PricingSection from "../components/clara-landing/PricingSection"
-import FaqSection from "../components/clara-landing/FaqSection"
-import FooterSection from "../components/clara-landing/FooterSection"
-import ContactFormModal from "../components/clara-landing/ContactFormModal"
+import HeroSection from "@/components/clara-landing/HeroSection"
+import OffersSection from "@/components/clara-landing/OffersSection"
+import BenefitsSection from "@/components/clara-landing/BenefitsSection"
+import ResultsSection from "@/components/clara-landing/ResultsSection"
+import TestimonialsSection from "@/components/clara-landing/TestimonialsSection"
+import PricingSection from "@/components/clara-landing/PricingSection"
+import FaqSection from "@/components/clara-landing/FaqSection"
+import FooterSection from "@/components/clara-landing/FooterSection"
+import ContactFormModal from "@/components/clara-landing/ContactFormModal"
 import { FormData } from "../types"
 
 export default function ClaraLanding() {
@@ -23,8 +23,13 @@ export default function ClaraLanding() {
   const [showContactForm, setShowContactForm] = useState(false)
 
   useEffect(() => {
-    const assistant = "633d9c9a-bd65-4ea5-9841-c4ddba58d9ef"
-    const apiKey = "a2faf751-b40e-42c1-9682-c7b7b42ba1f7"
+    const apiKey = process.env.NEXT_PUBLIC_VAPI_API_KEY
+    const assistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID
+
+    if (!apiKey || !assistantId) {
+      console.error("Missing Vapi API key or assistant ID")
+      return
+    }
 
     const buttonConfig = {
       position: "bottom-right",
@@ -32,36 +37,66 @@ export default function ClaraLanding() {
       width: "60px",
       height: "60px",
       style: {
-        zIndex: 9999,
+        zIndex: 2147483647, // Maximum z-index
       },
       idle: {
-        color: "rgb(255, 153, 0)", // button background color
+        color: "rgb(255, 153, 0)", // Orange background
         type: "pill",
-        title: "Check the demo of Clara",
-        subtitle: "Talk with our AI assistant",
-        icon: "https://img.icons8.com/ios-filled/50/ffffff/phone.png", // white phone icon on orange bg
+        title: "Experience Clara Live",
+        subtitle: "Connect with our AI Assistant",
+        icon: "https://img.icons8.com/ios-filled/50/ffffff/phone.png", // White phone icon
       },
     }
 
-    const script = document.createElement("script")
+    const script = document.createElement("script") as HTMLScriptElement
     script.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"
     script.defer = true
     script.async = true
 
+    const style = document.createElement("style")
+    style.textContent = `
+      .vapi-call-widget {
+        position: fixed !important;
+        z-index: 2147483647 !important;
+        pointer-events: auto !important;
+      }
+      @media (max-width: 1200px) {
+        .vapi-call-widget {
+          bottom: 70px !important;
+          right: 20px !important;
+          transform: scale(1) !important;
+        }
+        video, .hero-section {
+          z-index: 1 !important; /* Lower z-index for video and its container */
+        }
+      }
+    `
+    document.head.appendChild(style)
+
     script.onload = () => {
-      if (window.vapiSDK) {
-        window.vapiSDK.run({
+      if ((window as any).vapiSDK) {
+        (window as any).vapiSDK.run({
           apiKey,
-          assistant,
+          assistant: assistantId,
           config: buttonConfig,
         })
+      } else {
+        console.error("Vapi SDK failed to load")
       }
+    }
+
+    script.onerror = () => {
+      console.error("Failed to load Vapi script")
     }
 
     document.body.appendChild(script)
 
     return () => {
-      document.body.removeChild(script)
+      const scriptElement = document.querySelector('script[src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"]')
+      if (scriptElement) {
+        document.body.removeChild(scriptElement)
+      }
+      document.head.removeChild(style) // Cleanup style
     }
   }, [])
 
