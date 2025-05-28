@@ -33,7 +33,7 @@ export default function FooterSection() {
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            <p className="text-gray-400">Founders: Joyce Turchetti & Samuel Beck</p>
+            <p className="text-gray-400">Clara the future of Resturants Tech</p>
             <div className="flex space-x-4">
               <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
                 <span className="text-white text-sm">in</span>
