@@ -42,9 +42,9 @@ export default function FaqSection() {
   return (
     <section
       ref={faqRef}
-      className={`py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#cbbbef]/8 via-white to-[#81aaef]/10 relative transition-all duration-1000 ${faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+      className={`py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#cbbbef]/10 to-[#81aaef]/20 relative transition-all duration-1000 ${faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
     >
-      <div className="absolute inset-0 bg-gradient-to-l from-[#cbbbef]/5 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#cbbbef]/30 to-transparent"></div>
       <div className="max-w-4xl mx-auto relative z-10">
         <h2 className="text-4xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
 

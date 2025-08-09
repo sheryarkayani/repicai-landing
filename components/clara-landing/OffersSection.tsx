@@ -27,9 +27,9 @@ export default function OffersSection() {
   return (
     <section
       ref={offersRef}
-      className={`py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#81aaef]/5 via-white to-[#cbbbef]/12 relative transition-all duration-1000 ${offersInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+      className={`py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#cbbbef]/10 to-[#81aaef]/20 relative transition-all duration-1000 ${offersInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-[#81aaef]/8 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#cbbbef]/30 to-transparent"></div>
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">What Repic AI offers</h2>

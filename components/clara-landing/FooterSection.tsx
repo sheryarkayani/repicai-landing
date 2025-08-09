@@ -8,9 +8,9 @@ export default function FooterSection() {
     <>
       <section
         ref={footerRef}
-        className={`py-16 px-4 sm:px-6 lg:px-8 text-center bg-gradient-to-br from-[#81aaef]/5 via-white to-[#cbbbef]/10 relative transition-all duration-1000 ${footerInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+        className={`py-16 px-4 sm:px-6 lg:px-8 text-center bg-gradient-to-br from-white via-[#cbbbef]/10 to-[#81aaef]/20 relative transition-all duration-1000 ${footerInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-[#cbbbef]/8 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#cbbbef]/30 to-transparent"></div>
         <div className="max-w-4xl mx-auto relative z-10">
           <div className="w-16 h-16 bg-gradient-to-r from-[#cbbbef] to-[#81aaef] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
             <Phone className="w-8 h-8 text-white" />

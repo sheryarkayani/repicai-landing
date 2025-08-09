@@ -11,9 +11,9 @@ export default function PricingSection() {
     <section
       id="pricing"
       ref={pricingRef}
-      className={`py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#81aaef]/8 via-white to-[#cbbbef]/15 relative transition-all duration-1000 ${pricingInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+      className={`py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-[#cbbbef]/10 to-[#81aaef]/20 relative transition-all duration-1000 ${pricingInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-[#cbbbef]/5 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[#cbbbef]/30 to-transparent"></div>
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
           <Badge className="mb-6 bg-gradient-to-r from-[#cbbbef] to-[#81aaef] text-white rounded-full px-4 py-2 animate-pulse">💰 PRICE INCREASE SOON</Badge>
