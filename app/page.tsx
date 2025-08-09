@@ -6,6 +6,7 @@ import OffersSection from "@/components/clara-landing/OffersSection"
 import BenefitsSection from "@/components/clara-landing/BenefitsSection"
 import ResultsSection from "@/components/clara-landing/ResultsSection"
 import TestimonialsSection from "@/components/clara-landing/TestimonialsSection"
+import ProductFeaturesSection from "@/components/clara-landing/ProductFeaturesSection"
 import PricingSection from "@/components/clara-landing/PricingSection"
 import FaqSection from "@/components/clara-landing/FaqSection"
 import FooterSection from "@/components/clara-landing/FooterSection"
@@ -381,6 +382,7 @@ export default function ClaraLanding() {
       <BenefitsSection />
       <ResultsSection />
       <TestimonialsSection />
+      <ProductFeaturesSection />
       <PricingSection />
       <FaqSection />
       <FooterSection />
