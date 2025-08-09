@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Clara voice AI',
-  description: 'Created with v0',
+  title: 'Repic AI',
+  description: 'Created by Repic',
   generator: 'v0.dev',
 }
 
