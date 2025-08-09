@@ -124,7 +124,7 @@ export default function VapiCallButton() {
       <button
         className={
           `w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-colors ` +
-          `${isMicrophoneOn ? 'bg-green-500 hover:bg-green-600' : 'bg-orange-500 hover:bg-orange-600'} ` +
+          `${isMicrophoneOn ? 'bg-green-500 hover:bg-green-600' : 'bg-gradient-to-r from-[#cbbbef] to-[#81aaef] hover:from-[#81aaef] hover:to-[#cbbbef]'} ` +
           `${!vapiInstance ? 'opacity-50 cursor-not-allowed' : ''}`
         }
         onClick={toggleCall}

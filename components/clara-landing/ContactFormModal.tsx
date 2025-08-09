@@ -50,7 +50,7 @@ export default function ContactFormModal({
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#cbbbef] focus:border-transparent"
               />
             </div>
             <div>
@@ -60,7 +60,7 @@ export default function ContactFormModal({
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#cbbbef] focus:border-transparent"
               />
             </div>
             <div>
@@ -70,7 +70,7 @@ export default function ContactFormModal({
                 required
                 value={formData.restaurant}
                 onChange={(e) => setFormData({ ...formData, restaurant: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#cbbbef] focus:border-transparent"
               />
             </div>
             <div>
@@ -80,13 +80,13 @@ export default function ContactFormModal({
                 required
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#cbbbef] focus:border-transparent"
               />
             </div>
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg py-3"
+              className="w-full bg-gradient-to-r from-[#cbbbef] to-[#81aaef] hover:from-[#81aaef] hover:to-[#cbbbef] text-white rounded-lg py-3 shadow-lg transition-all duration-300"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center space-x-2">
